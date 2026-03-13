@@ -1,24 +1,27 @@
 import boto3
 import json
 
-def get_ai_explanation(decision):
 
-    prompt = f"Explain in 2 simple sentences why the traffic signal decision is {decision}."
+def get_ai_explanation(zone_a_vehicles, zone_b_vehicles, decision):
 
     try:
-        client = boto3.client(
-            service_name="bedrock-runtime",
-            region_name="us-east-1"
-        )
+        client = boto3.client("bedrock-runtime", region_name="us-east-1")
+
+        prompt = f"""
+        You are an AI traffic management assistant.
+
+        Analyze the following traffic data and explain the decision.
+
+        Zone A vehicles: {zone_a_vehicles}
+        Zone B vehicles: {zone_b_vehicles}
+
+        Explain which zone should get priority and why.
+        """
 
         body = json.dumps({
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            "max_tokens": 100
+            "prompt": prompt,
+            "max_tokens": 200,
+            "temperature": 0.5
         })
 
         response = client.invoke_model(
@@ -28,10 +31,25 @@ def get_ai_explanation(decision):
 
         result = json.loads(response["body"].read())
 
-        # Extract only the AI text
-        ai_text = result["choices"][0]["message"]["content"]
-
-        return ai_text
+        return result.get("completion", "AI explanation generated.")
 
     except Exception as e:
-        return f"Bedrock connection error: {str(e)}"
+
+        # fallback explanation if Bedrock fails
+        if zone_a_vehicles > zone_b_vehicles:
+            decision = "Zone A gets priority due to higher congestion."
+        elif zone_b_vehicles > zone_a_vehicles:
+            decision = "Zone B gets priority due to higher congestion."
+        else:
+            decision = "Both zones have equal traffic. Alternating signal."
+
+        return f"""
+AI fallback explanation (Bedrock unavailable):
+
+Zone A vehicles: {zone_a_vehicles}
+Zone B vehicles: {zone_b_vehicles}
+
+Decision: {decision}
+
+Error detail: {str(e)}
+"""
