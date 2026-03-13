@@ -1,0 +1,7 @@
+# Sample vehicle count updates for testing
+# Format: zone_a_count,zone_b_count
+15,8
+5,20
+10,10
+10,10
+0,0

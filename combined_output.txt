@@ -1,0 +1,48 @@
+======================================================================
+VortixelAI Traffic Management System
+Intelligent Traffic Signal Control Demonstration
+======================================================================
+
+Initializing system components...
+✓ Decision Engine initialized
+✓ Decision Logger initialized
+✓ Simulation Controller initialized
+
+Creating traffic zones...
+✓ Zone_A created
+✓ Zone_B created
+
+Scenario configured: 3 traffic cycles
+
+----------------------------------------------------------------------
+SIMULATION EXECUTION
+----------------------------------------------------------------------
+
+Cycle 1:
+  Zone_A: 20 vehicles -> GREEN
+  Zone_B: 10 vehicles -> RED
+  Decision: Zone A has higher vehicle count (20 > 10)
+Cycle 2:
+  Zone_A: 5 vehicles -> RED
+  Zone_B: 15 vehicles -> GREEN
+  Decision: Zone B has higher vehicle count (15 > 5)
+Cycle 3:
+  Zone_A: 8 vehicles -> GREEN
+  Zone_B: 8 vehicles -> RED
+  Decision: Equal vehicle counts (8), Zone A receives priority (default)
+
+----------------------------------------------------------------------
+SIMULATION SUMMARY
+----------------------------------------------------------------------
+Total cycles executed: 3
+Decision logs generated: 3
+
+Signal Distribution:
+  Zone A received GREEN: 2 times (66.7%)
+  Zone B received GREEN: 1 times (33.3%)
+
+✓ Safety constraint verified: No cycles with both zones GREEN
+
+======================================================================
+Simulation completed successfully!
+======================================================================
